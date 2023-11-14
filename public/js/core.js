@@ -1,4 +1,4 @@
-const URL = 'http://dev.bk_inventory';
+const URL = 'https://inventory.breakthrough-e.com';
 const DS  = '/';
 
 const getURL = function(called_url = null){
