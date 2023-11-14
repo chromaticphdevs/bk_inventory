@@ -62,9 +62,9 @@
             define('URL' , 'https://inventory.breakthrough-e.com');
             define('DBVENDOR' , 'mysql');
             define('DBHOST' , 'localhost');
-            define('DBUSER' , 'korpzpru_th_main');
+            define('DBUSER' , 'breaqidb_inventory');
             define('DBPASS' , 'mEKc[Q$}AE?B');
-            define('DBNAME' , 'korpzpru_th_main');
+            define('DBNAME' , 'breaqidb_inventory');
 
             define('BASECONTROLLER' , 'AuthController');
             define('BASEMETHOD' , 'index');
