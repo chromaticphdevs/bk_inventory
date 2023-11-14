@@ -52,7 +52,8 @@
                                     Form::label('Item');
                                     Form::select('item_id', $itemArray, '',[
                                         'class' => 'form-control',
-                                        'required' => true
+                                        'required' => true,
+                                        'id' => 'item_id'
                                     ])
                                 ?>
                             </div>
@@ -76,7 +77,8 @@
                                     Form::label('Unit');
                                     Form::text('', '', [
                                         'class' => 'form-control',
-                                        'readonly' => true
+                                        'readonly' => true,
+                                        'id' => 'unit'
                                     ]);
                                 ?>
                             </div>
@@ -120,5 +122,33 @@
             </div>
         </div>
     </div>
+<?php endbuild()?>
+
+<?php build('scripts') ?>
+    <script>
+        $(document).ready(function(){
+            const itemSelect = $('#item_id');
+            itemSelect.change(function(){
+                let itemId = $(this).val();
+
+                if(itemId.empty) {
+                    $('#unit').val('');
+                } else {
+                    $.ajax({
+                        type: 'get',
+                        url: getURL('api/item/get'),
+                        data: {
+                            id : itemId
+                        },
+                        success: function(response){
+                            let responseData = JSON.parse(response);
+                            $('#unit').val(responseData.item.unit)
+                        }
+                    })
+                }
+            });
+
+        });
+    </script>
 <?php endbuild()?>
 <?php loadTo()?>

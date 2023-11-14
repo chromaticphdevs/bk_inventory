@@ -1,17 +1,14 @@
-const URL = 'http://dev.medimart';
+const URL = 'http://dev.bk_inventory';
 const DS  = '/';
 
 const getURL = function(called_url = null){
 
 	if(called_url != null) {
-
 		return URL+DS+called_url;
 	}
-
 	else{
 		return URL;
 	}
-
 };
 
 function hide_delay(target , duration = 10000)

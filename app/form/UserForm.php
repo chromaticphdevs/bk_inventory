@@ -16,7 +16,6 @@
 
 			$this->name = $name ?? 'form_user';
 
-			$this->initCreate();
 			/*personal details*/
 			$this->addFirstName();
 			$this->addLastName();
@@ -34,14 +33,6 @@
 			$this->addSubmit('');
 		}
 
-		public function initCreate()
-		{
-			$this->init([
-				'url' => _route('user:create'),
-				'enctype' => true
-			]);
-		}
-		
 		public function addFirstName()
 		{
 			$this->add([

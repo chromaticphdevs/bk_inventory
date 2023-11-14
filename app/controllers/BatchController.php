@@ -14,7 +14,7 @@
         }
 
         public function index() {
-            $this->data['batches'] = $this->model->all();
+            $this->data['batches'] = $this->model->all(null, 'id desc');
             return $this->view('batch/index', $this->data);
         }
 

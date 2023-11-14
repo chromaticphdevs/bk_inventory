@@ -37,11 +37,21 @@
             return $this->view('user/create', $this->data);
         }
 
-        public function edit() {
-
+        public function edit($id) {
+            $user = $this->model->get($id);
+            if(isSubmitted()) {
+                $post = request()->posts();
+                $this->model->update($post, $id);
+                Flash::set('User Updated');
+                return redirect(_route('user:index'));
+            }
+            $this->data['user'] = $user;
+            $this->user_form->setValueObject($user);
+            $this->data['user_form'] = $this->user_form;
+            return $this->view('user/edit', $this->data);
         }
 
-        public function show() {
+        public function show($id) {
 
         }
     }

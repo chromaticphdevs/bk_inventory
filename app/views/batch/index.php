@@ -24,7 +24,7 @@
                                 <td><?php echo $row->batch_reference?></td>
                                 <td><?php echo $row->batch_name?></td>
                                 <td><?php echo $row->batch_date?></td>
-                                <td><?php echo number_format($row->result_quantity,0)?></td>
+                                <td><?php echo number_format($row->result_quantity,0)?>  Boxes</td>
                                 <td>
                                     <?php echo wLinkDefault(_route('batch:edit', $row->id), 'Edit')?>
                                     <?php echo wLinkDefault(_route('batch:show', $row->id), 'Show')?>
