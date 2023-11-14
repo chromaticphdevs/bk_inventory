@@ -66,7 +66,7 @@
             define('DBPASS' , 'mEKc[Q$}AE?B');
             define('DBNAME' , 'korpzpru_th_main');
 
-            define('BASECONTROLLER' , 'HomeController');
+            define('BASECONTROLLER' , 'AuthController');
             define('BASEMETHOD' , 'index');
         break;
     }
