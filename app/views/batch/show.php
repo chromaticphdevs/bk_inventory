@@ -5,8 +5,18 @@
         </div>
 
         <div class="card-body">
-            <?php echo wLinkDefault(_route('batch:index'), 'Batches')?> &nbsp;
+            <?php echo wLinkDefault(_route('batch:index'), 'Batches')?> 
             <?php echo wLinkDefault(_route('batch:edit', $batch->id), 'Edit')?>
+            &nbsp;
+            <?php 
+                if(isEqual($batch->save_status, 'unsaved')) {
+                    echo wLinkDefault(_route('batch:save', $batch->id), 'Save', [
+                        'class' => 'form-verify',
+                    ]);
+                } else {
+                    echo "<span class='badge bg-success'>Saved</span>";
+                }
+            ?>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
@@ -39,6 +49,7 @@
         </div>
 
         <div class="card-body">
+            <?php if(isEqual($batch->save_status, 'unsaved')) :?>
             <section class="mb-3">
                 <?php
                     Form::open([
@@ -49,21 +60,22 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <?php
-                                    Form::label('Item');
+                                    echo $itemForm->label('name');
                                     Form::select('item_id', $itemArray, '',[
                                         'class' => 'form-control',
                                         'required' => true,
                                         'id' => 'item_id'
                                     ])
                                 ?>
+                                <small>Info. abcd</small>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <?php
                                     Form::label('Quantity');
-                                    Form::number('quantity', '',[
+                                    Form::text('quantity', '',[
                                         'class' => 'form-control',
                                         'required' => true
                                     ])
@@ -74,11 +86,37 @@
                         <div class="col-md-1">
                             <div class="form-group">
                                 <?php
-                                    Form::label('Unit');
+                                    echo $itemForm->label('packing_id');
                                     Form::text('', '', [
                                         'class' => 'form-control',
                                         'readonly' => true,
-                                        'id' => 'unit'
+                                        'id' => 'packing_id'
+                                    ]);
+                                ?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <?php
+                                    echo $itemForm->label('weight_unit_id');
+                                    Form::text('', '', [
+                                        'class' => 'form-control',
+                                        'readonly' => true,
+                                        'id' => 'weight_unit_id'
+                                    ]);
+                                ?>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <?php
+                                    echo $itemForm->label('weight');
+                                    Form::text('', '', [
+                                        'class' => 'form-control',
+                                        'readonly' => true,
+                                        'id' => 'weight'
                                     ]);
                                 ?>
                             </div>
@@ -98,6 +136,7 @@
                     </div>
                 <?php Form::close()?>
             </section>
+            <?php endif?>
 
             <?php Flash::show('mess-add-item')?>
 
@@ -106,16 +145,28 @@
             <div class="table-responsive">
                 <table class="table-bordered table">
                     <tr>
-                        <td>Item</td>
-                        <td>Unit</td>
+                        <td><?php echo $itemForm->label('name')?></td>
                         <td>Quantity</td>
+                        <td><?php echo $itemForm->label('packing_id')?></td>
+                        <td><?php echo $itemForm->label('weight_unit_id')?></td>
+                        <td><?php echo $itemForm->label('weight')?></td>
+                        <td>Consp</td>
+                        <?php if(isEqual($batch->save_status, 'unsaved')) :?>
+                        <td>Action</td>
+                        <?php endif?>
                     </tr>
 
                     <?php foreach($batchItems as $key => $row) :?>
                         <tr>
-                            <td><?php echo $row->name?></td>
-                            <td><?php echo $row->unit?></td>
+                            <td><?php echo $row->item_name?></td>
                             <td><?php echo $row->quantity?></td>
+                            <td><?php echo $row->packing_name?></td>
+                            <td><?php echo $row->weight_unit_name?></td>
+                            <td><?php echo $row->weight?></td>
+                            <td><?php echo ($row->weight * $row->quantity) . ' '.$row->weight_unit_name?></td>
+                            <?php if(isEqual($batch->save_status, 'unsaved')) :?>
+                            <td><?php echo wLinkDefault(_route('batch-item:delete', $row->id), 'Delete')?></td>
+                            <?php endif?>
                         </tr>
                     <?php endforeach?>
                 </table>
@@ -142,7 +193,9 @@
                         },
                         success: function(response){
                             let responseData = JSON.parse(response);
-                            $('#unit').val(responseData.item.unit)
+                            $('#packing_id').val(responseData.item.packing_name);
+                            $('#weight_unit_id').val(responseData.item.weight_name);
+                            $('#weight').val(responseData.item.weight);
                         }
                     })
                 }

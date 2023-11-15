@@ -6,18 +6,31 @@
 
         <div class="card-body">
             <?php echo $stock_form->start()?>
-                <?php __($stock_form->getCol('item_id'))?>
-                <div class="form-group mt-2">
+                <?php echo Form::hidden('item_id', $item->id);?>
+                <div class="form-group">
                     <?php
-                        Form::label('Unit');
-                        Form::text('', $item->unit, [
+                        echo $item_form->label('name');
+                        echo Form::text('', $item->name, [
                             'class' => 'form-control',
-                            'required' => true,
                             'readonly' => true
                         ])
                     ?>
                 </div>
-                <?php __($stock_form->getCol('quantity'))?>
+                <div class="form-group mt-2">
+                    <div class="row">
+                        <div class="col-md-6"><?php __($stock_form->getCol('quantity'))?></div>
+                        <div class="col-md-6">
+                            <?php
+                                echo $item_form->label('packing_id');
+                                Form::text('', $item->packing_name, [
+                                    'class' => 'form-control',
+                                    'required' => true,
+                                    'readonly' => true
+                                ])
+                            ?>
+                        </div>
+                    </div>
+                </div>
                 <?php __($stock_form->getCol('date'))?>
                 <?php __($stock_form->getCol('entry_type'))?>
 

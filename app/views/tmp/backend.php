@@ -152,6 +152,11 @@
                                     <i class="link-icon" data-feather="hash"></i>
                                     <span class="menu-title">Users</span></a>
                             </li>
+                            <li class="nav-item">
+                                <a href="<?php echo _route('stock:index')?>" class="nav-link">
+                                    <i class="link-icon" data-feather="hash"></i>
+                                    <span class="menu-title">Stock Logs</span></a>
+                            </li>
                         </ul>
                     </div>
                 </nav>

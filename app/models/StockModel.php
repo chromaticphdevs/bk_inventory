@@ -15,7 +15,8 @@
             'purchase_order_id',
             'entry_origin',
             'entry_type',
-            'created_by'
+            'created_by',
+            'date'
         ];
         public function createOrUpdate($stockData, $id = null) {
             $_fillables = $this->getFillablesOnly($stockData);
@@ -44,10 +45,44 @@
             return $quantity;
         }
 
-        public function getProductLogs($itemId,$params = []) {
-            
-            $params['condition']['item_id'] = $itemId;
-            return parent::all($params['condition'], $params['order_by'] ?? 'id desc', $params['limit'] ?? null);
+        public function getProductLogs($params = []) {
+            $where = null;
+            $order = null;
+            $limit = null;
+
+            if(!empty($params['where'])) {
+                $where = " WHERE " . parent::conditionConvert($params['where']);
+            }
+
+            if(!empty($params['order'])) {
+                $order = " ORDER BY {$params['order']}";
+            }
+
+            if(!empty($params['limit'])) {
+                $limit = " LIMIT {$params['limit']}";
+            }
+
+            $this->db->query(
+                "SELECT stock.*, pu.name as packing_name,
+                    wu.abbr_name as weight_abbr_name,
+                    wu.name as weight_name,
+                    item.weight as item_weight,
+                    item.name as item_name
+
+                    FROM {$this->table} as stock
+
+                    LEFT JOIN items as item 
+                        ON item.id = stock.item_id
+
+                    LEFT JOIN packing_units as pu
+                        ON pu.id = item.packing_id
+                        
+                    LEFT JOIN weight_units as wu
+                        ON wu.id = item.weight_unit_id
+                    {$where} {$order} {$limit}"
+            );
+
+            return $this->db->resultSet();
         }
 
         public function getItemStock($itemid) {

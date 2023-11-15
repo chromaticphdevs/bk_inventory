@@ -13,7 +13,7 @@
             $this->itemModel = model('ItemModel');
         }
         public function index() {
-            $this->data['stocks'] = $this->model->getStocks();
+            $this->data['stocks'] = $this->model->getProductLogs();
             return $this->view('stock/index', $this->data);
         }
 
@@ -40,7 +40,6 @@
             $item = $this->itemModel->get($request['item_id']);
             $this->data['item'] = $item;
             $this->data['stock_form']->setValue('item_id', $request['item_id']);
-            $this->data['item_form']->setValue('unit', $item->unit);
             return $this->view('stock/add_stock', $this->data);
         }
 

@@ -244,8 +244,11 @@
 	]);
 
 	_routeInstance('batch', 'BatchController', $routes, [
-		'produced' => 'produced'
+		'produced' => 'produced',
+		'save'     => 'save'
 	]);
+
+	_routeInstance('batch-item', 'BatchItemController', $routes);
 
 
 	return $routes;

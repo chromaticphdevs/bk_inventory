@@ -9,11 +9,13 @@
                 <table class="table table-bordered dataTable">
                     <thead>
                         <th>#</th>
-                        <th>Variant</th>
-                        <th>Name</th>
+                        <th><?php echo $item_form->label('variant')?></th>
+                        <th><?php echo $item_form->label('name')?></th>
                         <th>Stock</th>
+                        <th><?php echo $item_form->label('packing_id')?></th>
                         <th>Min Stock</th>
-                        <th>Unit</th>
+                        <th><?php echo $item_form->label('weight')?></th>
+                        <th><?php echo $item_form->label('weight_unit_id')?></th>
                         <th>Action</th>
                     </thead>
 
@@ -32,8 +34,10 @@
                                         }
                                     ?>
                                 </td>
+                                <td><?php echo $row->packing_name?></td>
                                 <td><?php echo $row->min_stock?></td>
-                                <td><?php echo $row->unit?></td>
+                                <td><?php echo $row->weight?></td>
+                                <td><?php echo $row->weight_abbr_name?></td>
                                 <td>
                                     <?php 
                                         $anchor_items = [

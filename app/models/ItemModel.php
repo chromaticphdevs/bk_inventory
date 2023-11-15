@@ -8,36 +8,26 @@
         public $_fillables = [
             'name',
             'sku',
-            'barcode',
-            'cost_price',
-            'sell_price',
             'min_stock',
             'max_stock',
             'category_id',
+            'weight_unit_id',
+            'weight',
+            'packing_id',
             'variant',
             'remarks',
             'is_visible',
-            'unit',
-
         ];
         
         public function createOrUpdate($itemData, $id = null) {
             $retVal = null;
             $_fillables = $this->getFillablesOnly($itemData);
-            $item = $this->getItemByUniqueKey(random_number(), $itemData['name'], $id);
 
             if (!is_null($id)) {
-                if($item && ($item->id != $id)) {
-                    $this->addError("SKU Or Name Already exists");
-                    return false;
-                }
                 $this->addMessage("Item Updated");
                 $retVal = parent::update($_fillables, $id);
             } else {
-                if($item) {
-                    $this->addError("SKU Or Name Already exists");
-                    return false;
-                }
+                $_fillables['sku'] = random_number(8);
                 $retVal = parent::store($_fillables);
             }
 
@@ -88,8 +78,17 @@
             }
 
             $this->db->query(
-                "SELECT item.*, ifnull(stock.total_stock, 'No Stock') as total_stock
+                "SELECT item.*, ifnull(stock.total_stock, 'No Stock') as total_stock,
+                    mu.name as measurement_name,
+                    pu.name as packing_name
                     FROM {$this->table} as item 
+
+                    LEFT JOIN measurement_units as mu
+                        ON mu.id = item.measurement_unit_id
+
+                    LEFT JOIN packing_units as pu
+                        ON pu.id = item.packing_id
+
                     LEFT JOIN ($productQuantitySQL) as stock
                     ON stock.item_id = item.id
                     {$where} {$order_by} {$limit}"
@@ -119,9 +118,17 @@
 
             $this->db->query(
                 "SELECT item.*,
-                    ifnull(stock.total_stock, 'No Stock') as total_stock
+                    ifnull(stock.total_stock, 'No Stock') as total_stock,
+                    wu.name as weight_name, wu.abbr_name as weight_abbr_name,
+                    pu.name as packing_name
+
                     FROM {$this->table} as item
 
+                    LEFT JOIN weight_units as wu
+                        ON wu.id = item.weight_unit_id
+
+                    LEFT JOIN packing_units as pu
+                        ON pu.id = item.packing_id
 
                     LEFT JOIN ($productQuantitySQL) as stock
                     ON stock.item_id = item.id

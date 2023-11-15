@@ -16,7 +16,7 @@
         }
 
         public function index() {
-            $this->data['items'] = $this->model->all(null,'id desc');
+            $this->data['items'] = $this->model->getAll();
             return $this->view('item/index',$this->data);
         }
 
@@ -24,7 +24,8 @@
             $request = request()->inputs();
             if (isSubmitted()) {
                 $post = request()->posts();
-                $res = $this->model->createOrUpdate($request);
+                
+                $res = $this->model->createOrUpdate($post);
 
                 if($res) {
                     Flash::set($this->model->getMessageString());
@@ -45,9 +46,10 @@
         public function show($id) {
             $this->data['item'] = $this->model->get($id);
             $this->data['images'] = $this->model->getImages($id);
-            $this->data['stocks'] = $this->stockModel->getProductLogs($id,[
-                'limit' => 5,
-                'order_by' => 'id desc'
+            $this->data['stocks'] = $this->stockModel->getProductLogs([
+                'where' => [
+                    'item_id' => $id
+                ]
             ]);
             return $this->view('item/show', $this->data);
         }

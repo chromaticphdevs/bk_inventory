@@ -55,17 +55,7 @@
 
 		public function label($html , $for = null, $attributes = null)
 		{	
-			$attributes['class'] = ' col-form-label ';
-
-			if( isset($attributes['class']) )
-			{
-				$attributes['class'] .= ' col-form-label ';
-			}else{
-				$attributes['class'] = ' col-form-label ';
-			}
-
 			$attributes = is_null($attributes) ? $attributes : keypairtostr($attributes);
-
 			$html = ucwords($html);
 
 			return <<<EOF

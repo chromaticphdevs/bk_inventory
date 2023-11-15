@@ -21,11 +21,37 @@
         }
 
         public function getAll($params = []) {
+            $where = null;
+            $order = null;
+            $limit = null;
+
+            if(!empty($params['where'])) {
+                $where = " WHERE ".parent::conditionConvert($params['where']);
+            }
+
+            if(!empty($params['order'])) {
+                $order = " ORDER BY {$params['order']}";
+            }
+
+            if(!empty($params['limit'])) {
+                $limit = " LIMIT {$params['limit']}";
+            }
             $this->db->query(
-                "SELECT {$this->table}.*, name,
-                    sku,unit,variant FROM {$this->table}
+                "SELECT {$this->table}.*, item.name as item_name,
+                    sku,weight,weight_unit_id,
+                    wu.name as weight_unit_name,
+                    packing_id, pu.name as packing_name,
+                    variant 
+                    FROM {$this->table}
+
                     LEFT JOIN items as item
-                        ON {$this->table}.item_id = item.id"
+                        ON {$this->table}.item_id = item.id
+                    LEFT JOIN weight_units as wu
+                        ON wu.id = item.weight_unit_id
+                    LEFT JOIN packing_units as pu
+                        ON pu.id = item.packing_id  
+                    {$where} {$order} {$limit}  
+                "
             );
 
             return $this->db->resultSet();

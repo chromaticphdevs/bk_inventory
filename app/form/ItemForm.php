@@ -3,13 +3,19 @@
     namespace Form;
 
     load(['Form'],CORE);
+    load(['ItemService'], SERVICES);
+
     use Core\Form;
+    use Services\ItemService;
 
     class ItemForm extends Form{
+        private $weightUnitModel,$packingUnitModel;
         public function __construct($name = '')
         {
             parent::__construct();
             $this->name = empty($name) ? 'Item Form' : $name;
+            $this->weightUnitModel = model('WeightUnitModel');
+            $this->packingUnitModel = model('PackingUnitModel');
 
             $this->addName();
             $this->addSku();
@@ -22,6 +28,7 @@
             $this->addRemarks();
 
             $this->addUnit();
+            $this->addWeight();
 
             $this->addPacking();
             $this->addQuantityPerCase();
@@ -198,25 +205,41 @@
          * for medical items
          */
         public function addUnit() {
+            $weightUnits = $this->weightUnitModel->all();
+            $weightUnitsArray = arr_layout_keypair($weightUnits, ['id', 'abbr_name@name']);
+
             $this->add([
-                'name' => 'unit',
+                'name' => 'weight_unit_id',
                 'type' => 'select',
                 'options' => [
-                    'label' => 'Unit',
-                    'option_values' => [
-                        'kg' => 'Kilos',
-                        'qty' => 'Per Quantity'
-                    ]
+                    'label' => 'Weight Unit',
+                    'option_values' => $weightUnitsArray
                 ],
                 'class' => 'form-control'
             ]);
         }
+
         public function addPacking() {
+            $packingUnits = $this->packingUnitModel->all();
+            $packingUnitArray = arr_layout_keypair($packingUnits, ['id', 'name']);
+
             $this->add([
-                'name' => 'packing',
-                'type' => 'number',
+                'name' => 'packing_id',
+                'type' => 'select',
                 'options' => [
-                    'label' => 'Packing'
+                    'label' => 'Packing',
+                    'option_values' => $packingUnitArray
+                ],
+                'class' => 'form-control'
+            ]);
+        }
+
+        public function addWeight() {
+            $this->add([
+                'name' => 'weight',
+                'type' => 'text',
+                'options' => [
+                    'label' => 'Weight'
                 ],
                 'class' => 'form-control'
             ]);

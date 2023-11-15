@@ -275,6 +275,13 @@
 			return $form_label;
 		}
 
+		public function checkExistKey($name){
+			if(!isset($this->_items[$name])) {
+				return false;
+			}
+			return true;
+		}
+
 		/**
 		 * labelname and input row format*/
 		public function getRow($name , $attributes = [])
