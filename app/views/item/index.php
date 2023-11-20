@@ -9,8 +9,8 @@
                 <table class="table table-bordered dataTable">
                     <thead>
                         <th>#</th>
-                        <th><?php echo $item_form->label('variant')?></th>
                         <th><?php echo $item_form->label('name')?></th>
+                        <th><?php echo $item_form->label('variant')?></th>
                         <th>Stock</th>
                         <th><?php echo $item_form->label('packing_id')?></th>
                         <th>Min Stock</th>
@@ -23,8 +23,8 @@
                         <?php foreach($items as $key => $row) :?>
                             <tr>
                                 <td><?php echo ++$key?></td>
+                                <td class="clickable" data-href="<?php echo _route('item:show', $row->id)?>"><?php echo $row->name?></td>
                                 <td><?php echo $row->variant?></td>
-                                <td><?php echo $row->name?></td>
                                 <td>
                                     <?php
                                         if($row->total_stock < $row->min_stock) {
@@ -63,4 +63,14 @@
         </div>
     </div>
 <?php endbuild()?>
+
+<?php build('scripts') ?>
+    <script>
+        $(document).ready(function(){
+            $('.clickable').click(function(){
+                window.location.href = $(this).data('href');
+            });
+        });
+    </script>
+<?php endbuild()?>  
 <?php loadTo()?>
