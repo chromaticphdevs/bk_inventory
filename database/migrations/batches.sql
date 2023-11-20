@@ -17,8 +17,15 @@ create table batch_items(
     batch_id int(10),
     item_id int(10),
     quantity decimal(10,2),
+    total_weight decimal(10,2),
     created_at timestamp DEFAULT now()
 );
 
 alter table batches
     add column result_quantity decimal(10, 2);
+
+
+
+truncate batch_items;
+truncate stocks;
+truncate stock_weight_consumptions;

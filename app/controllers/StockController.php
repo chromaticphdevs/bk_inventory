@@ -13,7 +13,9 @@
             $this->itemModel = model('ItemModel');
         }
         public function index() {
-            $this->data['stocks'] = $this->model->getProductLogs();
+            $this->data['stocks'] = $this->model->getProductLogs([
+                'order' => 'stock.id desc'
+            ]);
             return $this->view('stock/index', $this->data);
         }
 

@@ -74,12 +74,31 @@
                         <div class="col-md-2">
                             <div class="form-group">
                                 <?php
-                                    Form::label('Quantity');
-                                    Form::text('quantity', '',[
+                                    Form::label('Consumption');
+                                    Form::select('consp_type',[
+                                        'packing' => 'Per Packing',
+                                        'weight'  => 'By Weight'
+                                    ], '',[
                                         'class' => 'form-control',
-                                        'required' => true
+                                        'required' => true,
+                                        'id' => 'inputConsumption'
                                     ])
                                 ?>
+
+                                <section>
+                                    <!-- PER PACKING -->
+                                    <div id="conspPerPacking" class="consp_values">
+                                        <?php Form::text('consp_per_packing','',[
+                                            'placeholder' => 'Quantity'
+                                        ])?>
+                                    </div>
+
+                                    <div id="conspByWeight" class="consp_values">
+                                        <?php Form::text('consp_by_weight','',[
+                                            'placeholder' => 'Weight'
+                                        ])?>
+                                    </div>
+                                </section>
                             </div>
                         </div>
 
@@ -158,12 +177,12 @@
 
                     <?php foreach($batchItems as $key => $row) :?>
                         <tr>
-                            <td><?php echo $row->item_name?></td>
+                            <td><?php echo $row->item_name . ' - ' .$row->variant?></td>
                             <td><?php echo $row->quantity?></td>
                             <td><?php echo $row->packing_name?></td>
                             <td><?php echo $row->weight_unit_name?></td>
                             <td><?php echo $row->weight?></td>
-                            <td><?php echo ($row->weight * $row->quantity) . ' '.$row->weight_unit_name?></td>
+                            <td><?php echo $row->total_weight?></td>
                             <?php if(isEqual($batch->save_status, 'unsaved')) :?>
                             <td><?php echo wLinkDefault(_route('batch-item:delete', $row->id), 'Delete')?></td>
                             <?php endif?>
@@ -179,6 +198,12 @@
     <script>
         $(document).ready(function(){
             const itemSelect = $('#item_id');
+            const inputConsumption = $('#inputConsumption');
+            const conspPerPacking = $('#conspPerPacking');
+            const conspByWeight = $('#conspByWeight');
+
+            inits();
+
             itemSelect.change(function(){
                 let itemId = $(this).val();
 
@@ -201,6 +226,24 @@
                 }
             });
 
+            inputConsumption.change(function(e){
+                let val = $(this).val();
+
+                if(val == 'packing') {
+                    $('.consp_values').hide();
+                    conspPerPacking.show();
+                }
+
+                if(val == 'weight') {
+                    $('.consp_values').hide();
+                    conspByWeight.show();
+                }
+            });
+
+            function inits() {
+                conspPerPacking.hide();
+                conspByWeight.hide();
+            }
         });
     </script>
 <?php endbuild()?>

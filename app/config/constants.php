@@ -34,9 +34,9 @@
     define('COMPANY_NAME' , 'BreakThrough-E Raw Matts');
 
     define('COMPANY_NAME_ABBR', 'Raw Matts');
-    define('COMPANY_EMAIL', 'info@medicad.store');
-    define('COMPANY_TEL', '+639260617765');
-    define('COMPANY_ADDRESS', ' 29-A Seminary Rd, Project 8, Quezon City, 1106 Metro Manila');
+    define('COMPANY_EMAIL', '--');
+    define('COMPANY_TEL', '--');
+    define('COMPANY_ADDRESS', ' Guiguinto Bulacan');
 
     
 

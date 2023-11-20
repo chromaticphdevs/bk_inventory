@@ -56,6 +56,12 @@
          * override Model:get
          */
         public function get($id) {
+            if(is_array($id)) {
+                return $this->getAll([
+                    'where' => $id
+                ]);
+            }
+            
             return $this->getAll([
                 'where' => [
                     'item.id' => $id

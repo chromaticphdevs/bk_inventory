@@ -46,10 +46,15 @@
 
             if(isSubmitted()) {
                 $post = request()->posts();
+                
                 $isOkay = $this->batchItemModel->add([
                     'item_id' => $post['item_id'],
                     'batch_id' => $batch->id,
-                    'quantity' => $post['quantity']
+                    'consumption' => [
+                        'consp_type' => $post['consp_type'],
+                        'consp_per_packing' => $post['consp_per_packing'],
+                        'consp_by_weight' => $post['consp_by_weight'],
+                    ]
                 ]);
 
                 if($isOkay) {
