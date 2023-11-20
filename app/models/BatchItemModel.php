@@ -1,6 +1,7 @@
 <?php
 
-use Services\StockService;
+    use Services\StockService;
+    load(['StockService'], SERVICES);
 
     class BatchItemModel extends Model
     {

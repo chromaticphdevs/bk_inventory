@@ -1,7 +1,8 @@
 <?php
 
-use Services\StockService;
-
+    use Services\StockService;
+    load(['StockService'], SERVICES);
+    
     class StockWeightConsumptionModel extends Model
     {
         public $table = 'stock_weight_consumptions';
