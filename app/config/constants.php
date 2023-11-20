@@ -31,7 +31,7 @@
 
     define('SITE_NAME' , 'medicad.store');
 
-    define('COMPANY_NAME' , 'BreakThrough-E Raw Matts');
+    define('COMPANY_NAME' , 'RMat');
 
     define('COMPANY_NAME_ABBR', 'Raw Matts');
     define('COMPANY_EMAIL', '--');
